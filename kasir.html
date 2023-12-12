@@ -11,11 +11,10 @@
             background-color: rgb(33, 33, 33);
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             color: #262626;
-            background-image: url(/bg.png);
-
+            background-image: url(bg.png);
         }
 
-        .title{
+        .title {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,14 +28,14 @@
             align-items: center;
             margin-top: 100px;
             height: 300px;
-            background-image: url(/chara-think.png);
+            background-image: url(chara-think.png);
             background-repeat: no-repeat;
             background-size: 20%;
             width: 1365px;
         }
 
         .btn {
-            margin-left: 9rem;
+            margin-left: 4rem;
         }
     </style>
 </head>
@@ -85,65 +84,73 @@
                     </td>
                     <td><input type="text" id="total" disabled /></td>
                 </tr>
-
+                <tr>
+                    <td>
+                        <label> bayar </label>
+                    </td>
+                    <td><input type="text" id="payment" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <label> kembalian </label>
+                    </td>
+                    <td><input type="text" id="change" disabled /></td>
+                </tr>
             </table>
-            <input class="btn" type="button" value="Proses" /></td>
+            <input class="btn" type="button" value="Proses" />
+            <input class="btn" type="button" value="Total Bayar" id="totalBayarBtn" />
         </form>
     </div>
 
+    <script>
+        let pulpen = document.querySelector('.pulpen');
+        const jmlpulpen = document.querySelector('.jumlahBelipulpen');
+        let pensil = document.querySelector('.pensil');
+        const jmlpensil = document.querySelector('.jumlahBelipensil');
+        let buku = document.querySelector('.buku');
+        const jmlbuku = document.querySelector('.jumlahBelibuku');
+        let penghapus = document.querySelector('.penghapus');
+        const jmlpenghapus = document.querySelector('.jumlahBelipenghapus');
+
+        const hasil = document.querySelector('#total');
+        const bayarInput = document.getElementById('payment');
+        const kembalian = document.getElementById('change');
+
+        const proses = document.querySelector('input[type="button"]');
+        proses.addEventListener('click', function () {
+            if (pulpen.checked === false && pensil.checked === false && buku.checked === false && penghapus.checked === false) {
+                alert('Check barang terlebih dahulu!');
+            }
+
+            let hargapulpen = 3000 * (jmlpulpen.value || 0);
+            let hargapensil = 2000 * (jmlpensil.value || 0);
+            let hargabuku = 5000 * (jmlbuku.value || 0);
+            let hargapenghapus = 1500 * (jmlpenghapus.value || 0);
+
+            let totalHarga = hargapulpen + hargapensil + hargabuku + hargapenghapus;
+            hasil.value = totalHarga;
+
+            let payment = parseFloat(bayarInput.value) || 0;
+            let change = payment - totalHarga;
+
+            if (change >= 0) {
+                kembalian.value = change;
+            } else {
+                alert('Uang tidak cukup!');
+            }
+        });
+
+        const totalBayarBtn = document.getElementById('totalBayarBtn');
+        totalBayarBtn.addEventListener('click', function () {
+            let hargapulpen = 3000 * (jmlpulpen.value || 0);
+            let hargapensil = 2000 * (jmlpensil.value || 0);
+            let hargabuku = 5000 * (jmlbuku.value || 0);
+            let hargapenghapus = 1500 * (jmlpenghapus.value || 0);
+
+            let totalHarga = hargapulpen + hargapensil + hargabuku + hargapenghapus;
+            hasil.value = totalHarga;
+        });
+    </script>
 </body>
-
-<script>
-    let pulpen = document.querySelector('.pulpen');
-    const jmlpulpen = document.querySelector('.jumlahBelipulpen');
-    let pensil = document.querySelector('.pensil');
-    const jmlpensil = document.querySelector('.jumlahBelipensil');
-    let buku = document.querySelector('.buku');
-    const jmlbuku = document.querySelector('.jumlahBelibuku');
-    let penghapus = document.querySelector('.penghapus');
-    const jmlpenghapus = document.querySelector('.jumlahBelipenghapus');
-
-    const hasil = document.querySelector('#total');
-
-    const proses = document.querySelector('input[type="button"]');
-    proses.addEventListener('click', function () {
-        if (pulpen.checked === false && pensil.checked === false && buku.checked === false && penghapus.checked === false) {
-            alert('Check barang terlebih dahulu!');
-        }
-
-        let hargapulpen = 3000;
-        if (pulpen.checked === true) {
-            hargapulpen *= jmlpulpen.value;
-            hasil.value = hargapulpen;
-        }
-
-        let hargapensil = 2000;
-        if (pensil.checked === true) {
-            hargapensil *= jmlpensil.value;
-            hasil.value = hargapensil;
-        }
-
-        let hargabuku = 5000;
-        if (buku.checked === true) {
-            hargabuku *= jmlbuku.value;
-            hasil.value = hargabuku;
-        }
-        let hargapenghapus = 1500;
-        if (penghapus.checked === true) {
-            hargapenghapus *= jmlpenghapus.value;
-            hasil.value = hargapenghapus;
-        }
-
-        if (pulpen.checked === true && pensil.checked === true && buku.checked === true && penghapus.checked === true) {
-            hasil.value = hargapulpen + hargapensil + hargabuku + hargapenghapus;
-
-        }
-
-        // else if (pensil.checked === true && laptop.checked === true) {
-        //     hasil.value = hargaHp + hargaLaptop;
-        // }
-
-    });      
-</script>
 
 </html>
